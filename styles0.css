@@ -1,0 +1,19 @@
+body {
+  /*background-image: url("https://sglmoviestore.files.wordpress.com/2012/02/world-map-1920x1080-wallpaper-4360.jpg");*/
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-color: white;
+  background-attachment: fixed;
+}
+h1 {
+  color: white;
+  font-size: 40px;
+  }
+h2 {
+  color: black;
+  font-size: 40px;
+  }
+p {
+  color: black;
+}

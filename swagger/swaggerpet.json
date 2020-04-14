@@ -1,0 +1,85 @@
+{ "openapi":"3.0.0",
+    "info":{
+        "title":"Swagger Petstore",
+        "description":"This is a sample server Petstore server.  You can find out more about Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).  For this sample, you can use the api key `special-key` to test the authorization filters.",
+        "version":"1.0.0",
+        "termsOfService":"http://swagger.io/terms/",
+        "contact":{"email":"apiteam@swagger.io"},
+        "license":{
+            "name":"Apache 2.0",
+            "url":"http://www.apache.org/licenses/LICENSE-2.0.html"
+        }
+    },
+    "servers":[
+        {
+            "url": "http://localhost:3000"
+        }
+    ],
+    "basePath":"/api",
+    "tags":[
+        {
+          "name":"information",
+          "description":"General API description",
+        },
+        {
+          "name":"query",
+          "description":"API queries based on city and optional country code."
+        }
+    ],
+    "paths":{
+        "/":{
+            "get":{
+                "tags":["information"],
+                "summary":"Simple Information Page",
+                "description":"Very basic API home page promising more information",
+                "operationId":"apiHome",
+                "produces":["text/html"],
+                "responses":{
+                    "200":{
+                           "description":"Successful Operation"
+                          }
+                      }
+            }
+        }
+    }
+}
+"/api/city":{
+  "get":{
+          "tags":["query"],
+          "summary":"List cities and provinces",
+          "description":"Full listing of cities and their provinces for the database",
+          "operationId":"listCitiesAndDistricts",
+          "responses":{
+            "200":{
+                  "description":"successful operation",
+                  "schema":{
+                      "type":"object",
+                      "properties":{
+                          "Error":{
+                              "type":"string",
+                              "enum":["true","false"]
+                          },
+                          "Message":{
+                            "type":"string",
+                            "enum":["Success","Failure"]
+                          },
+                          "City":{
+                              "type":"array",
+                              "items":{
+                                  "type":"object",
+                                  "properties":{
+                                      "name":{
+                                          "type":"string"
+                                      },
+                                      "district":{
+                                          "type":"string"
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+      }
+}

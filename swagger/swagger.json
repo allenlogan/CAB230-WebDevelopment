@@ -1,0 +1,475 @@
+{
+   "openapi": "3.0.0",
+   "info": {
+     "title": "CAB230: Logan Allen - N10138790",
+     "description": "Crime statistics and data based upon the assessment for CAB230 - Sem1 - 2019.",
+     "version": "1.0"
+   },
+   "servers": [
+     {
+       "url": "https://localhost:80"
+     }
+   ],
+   "paths": {
+     "/register": {
+       "post": {
+         "tags": [
+           "Authentication"
+         ],
+         "summary": "Registers a new user account",
+         "description": "This is your starting point.",
+         "requestBody": {
+           "required": true,
+           "content": {
+             "application/json": {
+               "schema": {
+                 "type": "object",
+                 "properties": {
+                   "email": {
+                     "type": "string",
+                     "required": true,
+                     "example": "user@gmail.com"
+                   },
+                   "password": {
+                     "type": "string",
+                     "required": true,
+                     "example": "userpassword"
+                   }
+                 }
+               }
+             }
+           }
+         },
+         "responses": {
+           "201": {
+             "description": "Successful",
+             "content": {
+               "application/json": {
+                 "schema": {
+                   "type": "object",
+                   "properties": {
+                     "message": {
+                       "type": "string",
+                       "example": "Account successfully registered."
+                     }
+                   }
+                 }
+               }
+             }
+           },
+           "400": {
+             "description": "Unsuccessful",
+             "content": {
+               "application/json": {
+                 "schema": {
+                   "type": "object",
+                   "properties": {
+                     "message": {
+                       "type": "string",
+                       "example": "The information you supplied already exists."
+                     }
+                   }
+                 }
+               }
+             }
+           }
+         }
+       }
+     },
+     "/login": {
+       "post": {
+         "summary": "Login with an existing user account",
+         "requestBody": {
+           "required": true,
+           "content": {
+             "application/json": {
+               "schema": {
+                 "type": "object",
+                 "properties": {
+                   "email": {
+                     "type": "string",
+                     "required": true,
+                     "example": "user@gmail.com"
+                   },
+                   "password": {
+                     "type": "string",
+                     "required": true,
+                     "example": "userpassword"
+                   }
+                 }
+               }
+             }
+           }
+         },
+         "responses": {
+           "200": {
+             "description": "OK",
+             "content": {
+               "application/json": {
+                 "schema": {
+                   "type": "object",
+                   "properties": {
+                     "access_token": {
+                       "type": "string",
+                       "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo1Nzg2LCJlbWFpbCI6ImRlbW8xMjM0QGdtYWlsLmNvbSJ9LCJpYXQiOjE1NTUzMjQ2MDIsImV4cCI6MTU1NTQxMTAwMn0.mo85iKuAQ_h8n8-6pkeNNs5CCnV0G8hScxhi_ml_Q6c"
+                     },
+                     "token_type": {
+                       "type": "string",
+                       "example": "Bearer"
+                     },
+                     "expires_in": {
+                       "type": "intager",
+                       "example": 86400
+                     }
+                   }
+                 }
+               }
+             }
+           },
+           "401": {
+             "description": "Unauthorized",
+             "content": {
+               "application/json": {
+                 "schema": {
+                   "type": "object",
+                   "properties": {
+                     "message": {
+                       "type": "string",
+                       "example": "Invalid login."
+                     }
+                   }
+                 }
+               }
+             }
+           }
+         },
+         "tags": [
+           "Authentication"
+         ]
+       }
+     },
+     "/search/:offence?": {
+       "get": {
+         "tags": [
+           "Helpers"
+         ],
+         "summary": "Seach for an offence",
+         "description": "Search for Offence data",
+         "parameters": [
+           {
+             "name": "offence",
+             "in": "query",
+             "description": "Offence to search for?",
+             "required": true,
+             "schema": {
+               "type": "string"
+             }
+           },
+           {
+             "name": "area",
+             "in": "query",
+             "description": "List of comma-separated Areas to filter search results.",
+             "required": false,
+             "schema": {
+               "type": "string"
+             }
+           },
+           {
+             "name": "age",
+             "in": "query",
+             "description": "List of comma-separated Ages to filter search results.",
+             "required": false,
+             "schema": {
+               "type": "string"
+             }
+           },
+           {
+             "name": "gender",
+             "in": "query",
+             "description": "List of comma-separated Genders to filter search results by",
+             "required": false,
+             "schema": {
+               "type": "string"
+             }
+           },
+           {
+             "name": "year",
+             "in": "query",
+             "description": "List of comma-separated Years to filter search results by",
+             "required": false,
+             "schema": {
+               "type": "intager"
+             }
+           },
+           {
+             "name": "month",
+             "in": "query",
+             "description": "List of comma-separated Months to filter search results by (1-12)",
+             "required": false,
+             "schema": {
+               "type": "intager"
+             }
+           }
+         ],
+         "responses": {
+           "200": {
+             "description": "OK",
+             "content": {
+               "application/json": {
+                 "schema": {
+                   "type": "object",
+                   "properties": {
+                     "query": {
+                       "type": "object",
+                       "properties": {
+                         "offence": {
+                           "type": "string",
+                           "example": "Arson"
+                         }
+                       }
+                     },
+                     "result": {
+                       "type": "array",
+                       "items": {
+                         "type": "object",
+                         "properties": {
+                           "LGA": {
+                             "type": "string",
+                             "example": "Aurukun Shire Council"
+                           },
+                           "total": {
+                             "type": "intager",
+                             "example": 4
+                           },
+                           "lat": {
+                             "type": "decimal(10,8)",
+                             "example": -27.470812
+                           },
+                           "lng": {
+                             "type": "decimal(11,8)",
+                             "example": 153.022455
+                           }
+                         }
+                       }
+                     }
+                   }
+                 }
+               }
+             }
+           },
+           "400": {
+             "description": "Bad Request",
+             "content": {
+               "application/json": {
+                 "schema": {
+                   "type": "object",
+                   "properties": {
+                     "message": {
+                       "type": "string",
+                       "example": "Missing a field in the search query parm"
+                     }
+                   }
+                 }
+               }
+             }
+           },
+           "401": {
+             "description": "Unauthorized",
+             "content": {
+               "application/json": {
+                 "schema": {
+                   "type": "object",
+                   "properties": {
+                     "message": {
+                       "type": "string",
+                       "example": "Unforunately, the authorization token is invalid."
+                     }
+                   }
+                 }
+               }
+             }
+           }
+         },
+         "tags": [
+           "Search"
+         ]
+       }
+     },
+     "/offences": {
+       "get": {
+         "tags": [
+           "Helpers"
+         ],
+         "summary": "View all offences",
+         "description": "List of offences to perform searches for",
+         "responses": {
+           "200": {
+             "description": "OK",
+             "content": {
+               "application/json": {
+                 "schema": {
+                   "type": "object",
+                   "properties": {
+                     "offences": {
+                       "type": "array",
+                       "example": [
+                         "Advertising Prostitution",
+                         "Armed Robbery"
+                       ]
+                     }
+                   }
+                 }
+               }
+             }
+           }
+         },
+         "tags": [
+           "Helpers"
+         ]
+       }
+     },
+     "/areas": {
+       "get": {
+         "tags": [
+           "Helpers"
+         ],
+         "summary": "View all areas",
+         "description": "List of Areas to filter search results by",
+         "responses": {
+           "200": {
+             "description": "OK",
+             "content": {
+               "application/json": {
+                 "schema": {
+                   "type": "object",
+                   "properties": {
+                     "offences": {
+                       "type": "array",
+                       "example": [
+                         "Aurukun Shire Council",
+                         "Balonne Shire Council"
+                       ]
+                     }
+                   }
+                 }
+               }
+             }
+           }
+         },
+         "tags": [
+           "Helpers"
+         ]
+       }
+     },
+     "/ages": {
+       "get": {
+         "tags": [
+           "Helpers"
+         ],
+         "summary": "View all ages",
+         "description": "List of Ages to filter search results by",
+         "responses": {
+           "200": {
+             "description": "OK",
+             "content": {
+               "application/json": {
+                 "schema": {
+                   "type": "object",
+                   "properties": {
+                     "offences": {
+                       "type": "array",
+                       "example": [
+                         "Adult",
+                         "Juvenile"
+                       ]
+                     }
+                   }
+                 }
+               }
+             }
+           }
+         },
+         "tags": [
+           "Helpers"
+         ]
+       }
+     },
+     "/genders": {
+       "get": {
+         "tags": [
+           "Helpers"
+         ],
+         "summary": "View all genders",
+         "description": "List of Genders to filter search results by",
+         "responses": {
+           "200": {
+             "description": "OK",
+             "content": {
+               "application/json": {
+                 "schema": {
+                   "type": "object",
+                   "properties": {
+                     "offences": {
+                       "type": "array",
+                       "example": [
+                         "Female",
+                         "Male"
+                       ]
+                     }
+                   }
+                 }
+               }
+             }
+           }
+         },
+         "tags": [
+           "Helpers"
+         ]
+       }
+     },
+     "/years": {
+       "get": {
+         "tags": [
+           "Helpers"
+         ],
+         "summary": "View all years",
+         "description": "List of Years to filter search results by",
+         "responses": {
+           "200": {
+             "description": "OK",
+             "content": {
+               "application/json": {
+                 "schema": {
+                   "type": "object",
+                   "properties": {
+                     "offences": {
+                       "type": "array",
+                       "example": [
+                         2001,
+                         2002
+                       ]
+                     }
+                   }
+                 }
+               }
+             }
+           }
+         },
+         "tags": [
+           "Helpers"
+         ]
+       }
+     }
+   },
+   "tags": [
+     {
+       "name": "Authentication"
+     },
+     {
+       "name": "Search"
+     },
+     {
+       "name": "Helpers"
+     }
+   ]
+ }
